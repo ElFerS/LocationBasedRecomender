@@ -11,7 +11,8 @@ import java.io.File;
  */
 public class MovieLens100kDataDownLoader {
 
-	 static String DOWNLOAD_URL = "http://www.grouplens.org/system/files/ml-100k.zip";
+	//static String DOWNLOAD_URL = "http://www.grouplens.org/system/files/ml-100k.zip";
+	static String DOWNLOAD_URL = "http://files.grouplens.org/datasets/movielens/ml-100k.zip";
 
 	static String TARGET_FILE = "MovieLens100kRatings.txt";
 	static String TARGET_DIRECTORY = "data/movielens/";
