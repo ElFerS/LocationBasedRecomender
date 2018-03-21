@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class LocationDataLoader {
     // A default location
-    protected String filename = "data/foursquare/ratings.txt";//TODO: elegir nombre para el archivo de ratings
+    protected String filename = "data/foursquare/foursquare100kRatings.txt";
     protected int minNumberOfRatingsPerUser = -1;
     protected int minNumberOfRatingsPerItem = -1;
     protected int sampleNUsers = -1;

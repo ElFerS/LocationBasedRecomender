@@ -1,13 +1,11 @@
 package org.recommender101;
 
+import org.recommender101.Location.Frequency;
 import org.recommender101.data.DataModel;
 import org.recommender101.eval.impl.LocationBasedRecommenderImpl;
 import org.recommender101.eval.interfaces.EvaluationResult;
 import org.recommender101.eval.interfaces.RuntimeResult;
-import org.recommender101.tools.MovieLens100kDataDownLoader;
-import org.recommender101.tools.Utilities101;
 
-import java.io.FileReader;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -15,6 +13,10 @@ import java.util.Properties;
 public class LocationBasedRecommender {
 
     LocationBasedRecommenderImpl impl;
+
+    // Default location of property file
+    public static String CONFIGURATION_FILE_G = "conf/LocationBasedRecommenderG.properties";
+    public static String CONFIGURATION_FILE_F = "conf/LocationBasedRecommenderF.properties";
 
 
     /**
@@ -136,63 +138,48 @@ public class LocationBasedRecommender {
     public static void main(String[] args) {
         try {
 
-            System.out.println("LocationBasedRecommender called with parameters: " + Utilities101.printArray(args));
+            System.out.println("Generating frecuency aproach");
+            Frequency fl = new Frequency();
+            fl.generateRatings();
 
-            Properties props = null;
-            String propertyFile = "";
+            LocationBasedRecommenderImpl rLocation;
 
-            //boolean downloadML = true;
+            System.out.println("Starting evaluation with default configuration file");
 
-            if (args.length > 0) {
-                propertyFile = args[0];
-                System.out.println("Looking for property file: " + propertyFile);
+            // Create the recommender
+            rLocation = new LocationBasedRecommenderImpl(CONFIGURATION_FILE_F);
+            //seteo los maximos y minimos que no estan hardcodeados
+            rLocation.setMinRating(fl.getMinRating());
+            rLocation.setMaxRating(fl.getMaxRating());
+            // Initialize the recommender
+            rLocation.init();
 
-                try {
-                    props = new Properties();
-                    props.load(new FileReader(propertyFile));
-                }
-                catch (Exception e) {
-                    System.out.println("Problem loading property file: " + propertyFile);
-                    e.printStackTrace();
-                    System.out.println("USAGE: org.recommender101.LocationBasedRecommender [propertyFileName] [--noMovieLensDownload]" );
-                    System.exit(1);
-                }
+            /*System.out.println("Generating graph aproach");
+            Graph gl = new Graph();
+            gl.generateRatings();
 
-            }
-            /* No se necesita bajar el archivo, se crea en el loader
-            // Doing the default.
-            // Make sure to have at least 2 GB of main memory for these tests
-            // Check for arguments
-            if (cmdLineArgumentExists(args, "noMovieLensDownload")) {
-                downloadML = false;
-            }
+            LocationBasedRecommenderImpl rLocation;
 
-            if (downloadML) {
-                System.out.println("Checking if test data has to be downloaded..");
-                MovieLens100kDataDownLoader.downloadML100k();
-            }
-            */
+            System.out.println("Starting evaluation with default configuration file");
 
-            LocationBasedRecommenderImpl r101;
-            if (props == null) {
-                System.out.println("Starting evaluation with default configuration file");
-                // Initialize the recommender
-                r101 = new LocationBasedRecommenderImpl();
-            }
-            else {
-                r101 = new LocationBasedRecommenderImpl(props);
-            }
+            // Create the recommender
+            rLocation = new LocationBasedRecommenderImpl(CONFIGURATION_FILE_G);
+            //seteo los maximos y minimos que no estan hardcodeados
+            rLocation.setMinRating(gl.getMinRating());
+            rLocation.setMaxRating(gl.getMaxRating());
+            // Initialize the recommender
+            rLocation.init();*/
 
             // Start the experiments
-            r101.runExperiments();
+            rLocation.runExperiments();
 
             // Show results
-            List<EvaluationResult> finalResult = r101.getLastResults();
-            r101.printSortedEvaluationResults(finalResult);
+            List<EvaluationResult> finalResult = rLocation.getLastResults();
+            rLocation.printSortedEvaluationResults(finalResult);
 
             // Show runtimes
-            List<RuntimeResult> runtimeResult = r101.getLastRuntimes();
-            r101.printRuntimeResults(runtimeResult);
+            List<RuntimeResult> runtimeResult = rLocation.getLastRuntimes();
+            rLocation.printRuntimeResults(runtimeResult);
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -15,9 +15,19 @@ import java.util.*;
 public class LocationBasedRecommenderImpl {
 
     public static String VERSION_INFO = "LcocationBadedRecommender101 v0.01, 2018-01-26";
+
+    public static void setMinRating(float minRating) {
+        MIN_RATING = minRating;
+    }
+
+    public static void setMaxRating(float maxRating) {
+        MAX_RATING = maxRating;
+    }
+
+//It contains three files in tsv format, including 3112 users and 3298 venues with 27149 check-ins and 10377 tips.
     // constants and defaults
-    public static float MIN_RATING = 0x0000;
-    public static float MAX_RATING = 0xffff;
+    public static float MIN_RATING = 1000000;
+    public static float MAX_RATING = -1;
     public static String csvPath = null;
     public static String csvRuntimePath = null;
     public static boolean csvAppend = false;
@@ -179,7 +189,7 @@ public class LocationBasedRecommenderImpl {
         Properties props = new Properties();
         props.load(new FileInputStream(configurationFile));
         properties = props;
-        init();
+        //init();
     }
 
     // =====================================================================================
@@ -290,8 +300,8 @@ public class LocationBasedRecommenderImpl {
          * Read the property values
          */
         readProperty("PROP_GLOBAL_NUM_OF_THREADS", "NUM_OF_THREADS");
-        readProperty("PROP_GLOBAL_MAX_RATING", "MAX_RATING");
-        readProperty("PROP_GLOBAL_MIN_RATING", "MIN_RATING");
+        //readProperty("PROP_GLOBAL_MAX_RATING", "MAX_RATING");
+        //readProperty("PROP_GLOBAL_MIN_RATING", "MIN_RATING");
         readProperty("PROP_GLOBAL_GIVEN_N_CONFIGURATION", "givenNConfiguration");
         readProperty("PROP_GLOBAL_TOP_N", "TOP_N");
         readProperty("PROP_GLOBAL_FILTER_NON_RELEVANT_ITEMS_FOR_RECOMMENDATION", "FILTER_NON_RELEVANT_ITEMS_FOR_RECOMMENDATION");
@@ -683,7 +693,7 @@ public class LocationBasedRecommenderImpl {
 
     // THE CONSTANTS
     // Default location of property file
-    public static String CONFIGURATION_FILE = "conf/LocationBasedRecommender.properties";
+    public static String CONFIGURATION_FILE = "conf/LocationBasedRecommender.properties";//never used
 
     // Property name for data loader
     public static String PROP_DATA_LOADER = "DataLoaderClass";
